@@ -26,18 +26,18 @@ with open('./Data/package.csv') as csvfile:
         delivery_status = 'At hub'
 
         package = [id, address, city, state, zip, delivery,
-                 size, note, delivery_start, address_location,
-                 delivery_status]
+                   size, note, delivery_start, address_location,
+                   delivery_status]
 
-        # Third Truck: Wrong address
+        # Third Batch: Wrong address
         if package[0] == '9':
             third_delivery_batch.append(package)
 
-        # Second truck: Load packages with 2nd truck or delayed constraints on the second truck, exclude "Must group"
+        # Second Batch: Load packages with 2nd truck or delayed constraints in the second batch
         if 'Can only be on truck 2' in package[7] or 'Delayed' in package[7]:
-                second_delivery_batch.append(package)
+            second_delivery_batch.append(package)
 
-        # First truck: Load "Must" group and "by time" packages on first truck:
+        # First Batch: Load "Must" group and "by time" packages in first batch:
         if package[5] != 'EOD' or package[0] == 19:
             if package not in second_delivery_batch and package not in third_delivery_batch:
                 first_delivery_batch.append(package)

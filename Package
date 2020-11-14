@@ -1,0 +1,17 @@
+import Distance
+import datetime
+import ReadCSV
+
+# Set default lists
+first_delivery = []
+second_delivery = []
+third_delivery = []
+
+first_truck_distances = []
+second_truck_distances = []
+third_truck_distances = []
+
+# Departure times for delivery trucks
+first_truck_times = ['8:00:00']
+second_truck_times = ['9:10:00']
+third_truck_times = ['11:00:00']

@@ -62,7 +62,7 @@ with open('./Data/distance') as csvfile2:
     #    to the next location based on the current location.  It re-assigns the "lowest_value" each time a lesser
     #    distance is found, ensuring that the minimum value is used for the next step.
     # 3. The algorithm then iterates through the package list AGAIN, this time conducting a boolean check
-    #    to see if the distance between the current location and location of the current package is equal
+    #    to see if the distance between the current location and location of the currently iterated package is equal
     #    to the "lowest_value" that has already been determined.
     # 4. If that boolean is true, the algorithm checks to see which truck the package is associated with and appends
     #    values to the necessary truck lists.  The package is then removed from the package list, current location is
