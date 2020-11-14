@@ -1,16 +1,15 @@
-#Read data from CSV files
-
 import csv
 from HashTable import HashMap
 
+# Read CSV file for packages
 with open('./Data/package.csv') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=',')
     hash_map = HashMap()
 
     # Set all three trucks to empty lists
-    first_truck = []
-    second_truck = []
-    third_truck = []
+    first_delivery_batch = []
+    second_delivery_batch = []
+    third_delivery_batch = []
 
     # Populate Hash Table -- O(n)
     for row in readCSV:
@@ -32,44 +31,45 @@ with open('./Data/package.csv') as csvfile:
 
         # Third Truck: Wrong address
         if package[0] == '9':
-            third_truck.append(package)
+            third_delivery_batch.append(package)
 
         # Second truck: Load packages with 2nd truck or delayed constraints on the second truck, exclude "Must group"
         if 'Can only be on truck 2' in package[7] or 'Delayed' in package[7]:
-                second_truck.append(package)
+                second_delivery_batch.append(package)
 
         # First truck: Load "Must" group and "by time" packages on first truck:
         if package[5] != 'EOD' or package[0] == 19:
-            if package not in second_truck and package not in third_truck:
-                first_truck.append(package)
+            if package not in second_delivery_batch and package not in third_delivery_batch:
+                first_delivery_batch.append(package)
 
         # Evenly distribute remaining packages between second and third trucks
-        if package not in first_truck and package not in second_truck and package not in third_truck:
-            if len(second_truck) < len(third_truck):
-                second_truck.append(package)
+        if package not in first_delivery_batch and package not in second_delivery_batch and package not in third_delivery_batch:
+            if len(second_delivery_batch) < len(third_delivery_batch):
+                second_delivery_batch.append(package)
             else:
-                third_truck.append(package)
+                third_delivery_batch.append(package)
 
         # Insert package into hash table
         hash_map.insert(id, package)
 
-    #Verify logic loaded trucks correctly
-    print(len(first_truck))
-    print(len(second_truck))
-    print(len(third_truck))
+    # Verify logic loaded trucks correctly
+    print(len(first_delivery_batch))
+    print(len(second_delivery_batch))
+    print(len(third_delivery_batch))
 
-    def get_first_truck():
-        return first_truck
+    def get_first_delivery_batch():
+        return first_delivery_batch
 
-    def get_second_truck():
-        return second_truck
+    def get_second_delivery_batch():
+        return second_delivery_batch
 
-    def get_third_truck():
-        return third_truck
+    def get_third_delivery_batch():
+        return third_delivery_batch
 
     def get_all_packages():
         return hash_map
 
+    print(first_delivery_batch)
 
 
 
