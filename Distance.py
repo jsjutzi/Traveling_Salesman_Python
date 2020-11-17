@@ -1,5 +1,6 @@
 import csv
 import datetime
+import ReadCSV
 
 # Read CSV files for distances
 with open('./Data/distance.csv') as csvfile:
@@ -12,7 +13,7 @@ with open('./Data/location.csv') as csvfile2:
     def calculate_total_distance(row, col, total):
         distance = distance_csv[row][col]
         # If row, col pair has empty value, use inverse -- O(1)
-        if distance >= '':
+        if distance == '':
             distance = distance_csv[col][row]
         return total + float(distance)
 
@@ -21,7 +22,7 @@ with open('./Data/location.csv') as csvfile2:
         distance = distance_csv[row][col]
 
         # If row, col pair has empty value, use inverse -- O(1)
-        if not distance:
+        if distance == '':
             distance = distance_csv[col][row]
 
         return float(distance)
@@ -123,12 +124,15 @@ with open('./Data/location.csv') as csvfile2:
                     calculate_shortest_route(package_list, 3, current_location)
 
     # Getter functions to return optimized trucks -- All are O(1)
-    first_truck_index_list.insert(0, '0')
-    second_truck_index_list.insert(0, '0')
-    third_truck_index_list.insert(0, '0')
+    first_truck_index_list.insert(0, 0)
+    second_truck_index_list.insert(0, 0)
+    third_truck_index_list.insert(0, 0)
 
     def get_first_truck_indexes():
         return first_truck_index_list
+
+    def update_first_truck(index, value_index, value):
+        first_truck[index][value_index] = value
 
     def get_first_truck():
         return first_truck
@@ -136,11 +140,17 @@ with open('./Data/location.csv') as csvfile2:
     def get_second_truck_indexes():
         return second_truck_index_list
 
+    def update_second_truck(index, value_index, value):
+        second_truck[index][value_index] = value
+
     def get_second_truck():
         return second_truck
 
     def get_third_truck_indexes():
         return third_truck_index_list
+
+    def update_third_truck(index, value_index, value):
+        third_truck[index][value_index] = value
 
     def get_third_truck():
         return third_truck

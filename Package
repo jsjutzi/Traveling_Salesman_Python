@@ -12,45 +12,62 @@ second_truck_distances = []
 third_truck_distances = []
 
 # Departure times for delivery trucks
-first_truck_time = '8:00:00'
-second_truck_time = '9:10:00'
-third_truck_time = '11:00:00'
+first_truck_times = ['8:00:00']
+second_truck_times = ['9:10:00']
+third_truck_times = ['11:00:00']
 
+package_to_address_map = {}
 # Get delivery batch for truck 1
 first_delivery_batch = ReadCSV.get_first_delivery_batch()
 
 # Update start_time for each package in first truck -- O(n)
+print(first_delivery_batch)
 for package in first_delivery_batch:
-    package[8] = first_truck_time
+    package[8] = first_truck_times[0]
     first_truck.append(package)
 
-# print(first_truck)
 # Get list of addresses
 address_list = Distance.get_package_addresses()
-# print(address_list)
-# Find address matches -- O(n^2)
-# for package in first_truck:
-#     for address in address_list:
-#         if package[1] == address[1]:
-#
-#             first_truck_distances.append(package[0])
 
-print(address_list)
 for index, package in enumerate(first_truck):
     for address in address_list:
         if package[1] == address[1]:
             first_truck_distances.append(package[0])
+            # Add address index value to package
             first_truck[index][9] = address_list.index(address)
 
-
-# print(first_truck)
-
 # Sort packages for efficiency
-Distance.calculate_shortest_route(first_truck, 1, 1)
-first_truck_distances_total = 0
+Distance.calculate_shortest_route(first_truck, 1, 0)
+first_truck_distance_total = 0
 
-print(Distance.get_first_truck())
+first_truck_index_count = len(Distance.get_first_truck_indexes())
 
+# Calculate distances to sort truck -- O(n^2)
+for index in range(first_truck_index_count):
+    try:
+        row = int(Distance.get_first_truck_indexes()[index])
+        column = int(Distance.get_first_truck_indexes()[index + 1])
 
+        first_truck_packages = Distance.get_first_truck()
+        print(first_truck_packages)
+
+        # Map package id's to address id's
+        for package in first_truck_packages:
+            if int(package[0]) == row:
+                row = package[9]
+            if int(package[0]) == column:
+                column = package[9]
+
+        first_truck_distance_total = Distance.calculate_total_distance(row, column, first_truck_distance_total)
+        first_truck_distance_current = Distance.calculate_current_distance(row, column)
+
+        delivery_time = Distance.calculate_truck_time(first_truck_distance_current, first_truck_times)
+
+        Distance.update_first_truck(index, 10, str(delivery_time))
+        updated_first_truck = Distance.get_first_truck()[index][0]
+
+        ReadCSV.get_all_packages().update(int(updated_first_truck), first_truck)
+    except IndexError:
+        pass
 
 # Compare package addresses

@@ -10,6 +10,7 @@ with open('./Data/package.csv') as csvfile:
     first_delivery_batch = []
     second_delivery_batch = []
     third_delivery_batch = []
+    package_id_addresses = []
 
     # Populate Hash Table -- O(n)
     for row in readCSV:
