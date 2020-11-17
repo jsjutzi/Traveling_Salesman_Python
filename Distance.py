@@ -2,25 +2,26 @@ import csv
 import datetime
 
 # Read CSV files for distances
-with open('./Data/distance') as csvfile:
+with open('./Data/distance.csv') as csvfile:
     distance_csv = list(csv.reader(csvfile, delimiter=','))
 
-with open('./Data/distance') as csvfile2:
+with open('./Data/location.csv') as csvfile2:
     location_csv = list(csv.reader(csvfile2, delimiter=','))
 
     # Calculate total distance -- O(1)
     def calculate_total_distance(row, col, total):
         distance = distance_csv[row][col]
         # If row, col pair has empty value, use inverse -- O(1)
-        if distance == '':
+        if distance >= '':
             distance = distance_csv[col][row]
         return total + float(distance)
 
     # Calculate current distance -- O(1)
     def calculate_current_distance(row, col):
         distance = distance_csv[row][col]
+
         # If row, col pair has empty value, use inverse -- O(1)
-        if distance == '':
+        if not distance:
             distance = distance_csv[col][row]
 
         return float(distance)
@@ -66,8 +67,8 @@ with open('./Data/distance') as csvfile2:
     #    to the "lowest_value" that has already been determined.
     # 4. If that boolean is true, the algorithm checks to see which truck the package is associated with and appends
     #    values to the necessary truck lists.  The package is then removed from the package list, current location is
-    #    updated, and the function calls itself recursively.  This continues until we reach the base case, where the
-    #    list is empty.
+    #    updated, and the function calls itself recursively with the updated arguments.  This continues until we reach
+    #    the base case, where the list is empty.
 
     #    This function has a space-time complexity of O(n^2)
 
@@ -79,37 +80,52 @@ with open('./Data/distance') as csvfile2:
         new_location = 0
 
         for package in package_list:
-            value = int(package[1])
+            value = int(package[9])
             current_distance = calculate_current_distance(current_location, value)
-
+            # Update lowest_value if the current distance is lesser
             if current_distance <= lowest_value:
                 lowest_value = current_distance
 
         for package in package_list:
-            if calculate_current_distance(current_location, int(package[1])) == lowest_value:
+            if calculate_current_distance(current_location, int(package[9])) == lowest_value:
                 if truck_num == 1:
+                    # Load on first truck
                     first_truck.append(package)
-                    first_truck_index_list.append(package[1])
-                    package_list.pop(list.index(package))
+                    first_truck_index_list.append(package[0])
+
+                    # Update current location and package list for next recursive call
                     current_location = new_location
+                    package_list.pop(package_list.index(package))
+
+                    # Recursively call function
                     calculate_shortest_route(package_list, 1, current_location)
                 elif truck_num == 2:
+                    # Load on second truck
                     second_truck.append(package)
-                    second_truck_index_list.append(package[1])
-                    package_list.pop(list.index(package))
+                    second_truck_index_list.append(package[0])
+
+                    # Update current location and package list for next recursive call
                     current_location = new_location
+                    package_list.pop(package_list.index(package))
+
+                    # Recursively call function
                     calculate_shortest_route(package_list, 2, current_location)
                 elif truck_num == 3:
+                    # Load on third truck
                     third_truck.append(package)
-                    third_truck_index_list.append(package[1])
-                    package_list.pop(list.index(package))
+                    third_truck_index_list.append(package[0])
+
+                    # Update current location and package list for next recursive call
                     current_location = new_location
+                    package_list.pop(package_list.index(package))
+
+                    # Recursively call function
                     calculate_shortest_route(package_list, 3, current_location)
 
     # Getter functions to return optimized trucks -- All are O(1)
     first_truck_index_list.insert(0, '0')
     second_truck_index_list.insert(0, '0')
-    third_truck_index_list.append(0, '0')
+    third_truck_index_list.insert(0, '0')
 
     def get_first_truck_indexes():
         return first_truck_index_list
@@ -128,3 +144,7 @@ with open('./Data/distance') as csvfile2:
 
     def get_third_truck():
         return third_truck
+
+    # Get address info for packages
+    def get_package_addresses():
+        return location_csv

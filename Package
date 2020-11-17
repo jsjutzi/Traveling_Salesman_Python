@@ -1,17 +1,56 @@
 import Distance
-import datetime
 import ReadCSV
+import datetime
 
 # Set default lists
-first_delivery = []
-second_delivery = []
-third_delivery = []
+first_truck = []
+second_truck = []
+third_truck = []
 
 first_truck_distances = []
 second_truck_distances = []
 third_truck_distances = []
 
 # Departure times for delivery trucks
-first_truck_times = ['8:00:00']
-second_truck_times = ['9:10:00']
-third_truck_times = ['11:00:00']
+first_truck_time = '8:00:00'
+second_truck_time = '9:10:00'
+third_truck_time = '11:00:00'
+
+# Get delivery batch for truck 1
+first_delivery_batch = ReadCSV.get_first_delivery_batch()
+
+# Update start_time for each package in first truck -- O(n)
+for package in first_delivery_batch:
+    package[8] = first_truck_time
+    first_truck.append(package)
+
+# print(first_truck)
+# Get list of addresses
+address_list = Distance.get_package_addresses()
+# print(address_list)
+# Find address matches -- O(n^2)
+# for package in first_truck:
+#     for address in address_list:
+#         if package[1] == address[1]:
+#
+#             first_truck_distances.append(package[0])
+
+print(address_list)
+for index, package in enumerate(first_truck):
+    for address in address_list:
+        if package[1] == address[1]:
+            first_truck_distances.append(package[0])
+            first_truck[index][9] = address_list.index(address)
+
+
+# print(first_truck)
+
+# Sort packages for efficiency
+Distance.calculate_shortest_route(first_truck, 1, 1)
+first_truck_distances_total = 0
+
+print(Distance.get_first_truck())
+
+
+
+# Compare package addresses

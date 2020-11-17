@@ -69,8 +69,6 @@ with open('./Data/package.csv') as csvfile:
     def get_all_packages():
         return hash_map
 
-    print(first_delivery_batch)
-
 
 
 
