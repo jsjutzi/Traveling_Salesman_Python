@@ -62,11 +62,11 @@ with open('./Data/package.csv') as csvfile:
         # Insert package into hash table
         hash_map.insert(id, package)
 
-    # Verify logic loaded batches correctly
-    print(len(first_delivery_batch))
-    print(len(second_delivery_batch))
-    print(len(third_delivery_batch))
-    print(len(fourth_delivery_batch))
+    # # Verify logic loaded batches correctly
+    # print(len(first_delivery_batch))
+    # print(len(second_delivery_batch))
+    # print(len(third_delivery_batch))
+    # print(len(fourth_delivery_batch))
 
     def get_first_delivery_batch():
         return first_delivery_batch

@@ -1,5 +1,4 @@
-# Student Name: Jack Jutzi
-# Student ID: 001073745
+# Student Name: Jack Jutzi -- Student ID: 001073745
 
 import datetime
 from ReadCSV import get_all_packages, display_data_to_user, display_status_to_user

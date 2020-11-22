@@ -68,7 +68,7 @@ with open('./Data/location.csv') as csvfile2:
     #    updated, and the function calls itself recursively with the updated arguments.  This continues until we reach
     #    the base case, where the list is empty.
 
-    #    This function has a space-time complexity of O(n^2)
+    #    This function has a space-time complexity of O(n)
     def calculate_shortest_route(package_list, truck_num, current_location):
         if len(package_list) == 0 or not len(package_list):
             return package_list

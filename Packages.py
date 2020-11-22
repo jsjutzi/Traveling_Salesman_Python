@@ -154,14 +154,12 @@ for index in range(second_truck_index_count):
 
 new_second_truck_distance_current = Distance.calculate_current_distance(0, 12)
 second_truck_return_to_hub_time = Distance.calculate_truck_time(new_second_truck_distance_current, second_truck_times)
-print('truck 2 return to hub time', second_truck_return_to_hub_time)
 
 last_location_second_truck = Distance.get_second_truck()[-1][9]
 second_truck_distance_total = second_truck_distance_total + Distance.calculate_current_distance(last_location_second_truck, 1)
 
 new_first_truck_distance_current = Distance.calculate_current_distance(0, 6)
 first_truck_return_to_hub_time = Distance.calculate_truck_time(new_first_truck_distance_current, first_truck_times)
-print('truck 1 return to hub time', first_truck_return_to_hub_time)
 
 last_location_first_truck = Distance.get_first_truck()[-1][9]
 third_truck_distance_total = first_truck_distance_total + Distance.calculate_current_distance(last_location_first_truck, 1)
