@@ -4,10 +4,8 @@
 import datetime
 from ReadCSV import get_all_packages, display_data_to_user, display_status_to_user
 from Packages import get_total_distance
-from Distance import get_first_truck
-from Distance import get_second_truck
-from Distance import get_third_truck
-from Distance import get_second_truck_second_load
+
+
 class Main:
     # This is the opening message shown to a user when the program initiates
     print('*************************************')
