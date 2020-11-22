@@ -11,19 +11,13 @@ with open('./Data/location.csv') as csvfile2:
 
     # Calculate total distance -- O(1)
     def calculate_total_distance(row, col, total):
-        distance = distance_csv[row][col]
-        # If row, col pair has empty value, use inverse -- O(1)
-        if distance == '':
-            distance = distance_csv[col][row]
+        distance = distance_csv[row][col] or distance_csv[col][row]
+
         return total + float(distance)
 
     # Calculate current distance -- O(1)
     def calculate_current_distance(row, col):
-        distance = distance_csv[row][col]
-
-        # If row, col pair has empty value, use inverse -- O(1)
-        if distance == '':
-            distance = distance_csv[col][row]
+        distance = distance_csv[row][col] or distance_csv[col][row]
 
         return float(distance)
 
@@ -33,6 +27,7 @@ with open('./Data/location.csv') as csvfile2:
         new_time = distance / 18
         distance_in_minutes = '{0:02.0f}:{1:02.0f}'.format(*divmod(new_time * 60, 60))
         total_time = distance_in_minutes + ':00'
+
         truck_time_list.append(total_time)
         total = datetime.timedelta()
 
@@ -47,7 +42,9 @@ with open('./Data/location.csv') as csvfile2:
     first_truck_index_list = []
 
     second_truck = []
+    second_truck_second_load = []
     second_truck_index_list = []
+    second_truck_second_index_list = []
 
     third_truck = []
     third_truck_index_list = []
@@ -72,7 +69,6 @@ with open('./Data/location.csv') as csvfile2:
     #    the base case, where the list is empty.
 
     #    This function has a space-time complexity of O(n^2)
-
     def calculate_shortest_route(package_list, truck_num, current_location):
         if len(package_list) == 0 or not len(package_list):
             return package_list
@@ -112,7 +108,6 @@ with open('./Data/location.csv') as csvfile2:
                     # Recursively call function
                     calculate_shortest_route(package_list, 2, current_location)
                 elif truck_num == 3:
-                    # Load on third truck
                     third_truck.append(package)
                     third_truck_index_list.append(package[0])
 
@@ -123,10 +118,22 @@ with open('./Data/location.csv') as csvfile2:
                     # Recursively call function
                     calculate_shortest_route(package_list, 3, current_location)
 
+                elif truck_num == 4:
+                    second_truck_second_load.append(package)
+                    second_truck_second_index_list.append(package[0])
+
+                    # Update current location and package list for next recursive call
+                    current_location = new_location
+                    package_list.pop(package_list.index(package))
+
+                    # Recursively call function
+                    calculate_shortest_route(package_list, 4, current_location)
+
     # Getter functions to return optimized trucks -- All are O(1)
     first_truck_index_list.insert(0, 0)
     second_truck_index_list.insert(0, 0)
     third_truck_index_list.insert(0, 0)
+    second_truck_second_index_list.insert(0, 0)
 
     def get_first_truck_indexes():
         return first_truck_index_list
@@ -154,6 +161,15 @@ with open('./Data/location.csv') as csvfile2:
 
     def get_third_truck():
         return third_truck
+
+    def get_second_truck_second_indexes():
+        return second_truck_second_index_list
+
+    def update_second_truck_second_load(index, value_index, value):
+        second_truck_second_load[index][value_index] = value
+
+    def get_second_truck_second_load():
+        return second_truck_second_load
 
     # Get address info for packages
     def get_package_addresses():
